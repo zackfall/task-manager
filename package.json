@@ -11,6 +11,8 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
+    "axios": "^0.27.2",
+    "mongoose": "^6.4.2",
     "next": "12.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
@@ -18,6 +20,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
+    "@types/mockingoose": "^2.13.0",
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
@@ -25,6 +28,7 @@
     "eslint-config-next": "12.2.0",
     "jest": "^28.1.2",
     "jest-environment-jsdom": "^28.1.2",
+    "mockingoose": "^2.15.2",
     "typescript": "4.7.4"
   }
 }
