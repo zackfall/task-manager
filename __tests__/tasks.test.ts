@@ -134,14 +134,14 @@ describe('Test Tasks Service', () => {
           description: 'task 1',
           createdAt: Date.now(),
           updatedAt: null,
-          subTasks: null,
-          done: true
+          subTasks: [],
+          done: false
         }, 'save');
-      const res = await createTask();
+      const res = await createTask("Task 1", "task 1", null);
       expect(res.name).toBe('Task 1');
       expect(res.updatedAt).toBeNull();
-      expect(res.subTasks).toBeNull();
-      expect(res.done).toBeTruthy();
+      expect(res.subTasks).toEqual([]);
+      expect(res.done).toBeFalsy();
     });
     it('should return the created subTask', async () => {
       mockingoose(SubTasksModel).toReturn(
@@ -150,13 +150,13 @@ describe('Test Tasks Service', () => {
           description: 'subtask 1',
           createdAt: Date.now(),
           updatedAt: null,
-          subTasks: null,
-          done: true
+          subTasks: [],
+          done: false
         }, 'save');
       const res = await createSubTask("SubTask1", "subtask 1");
       expect(res.name).toBe('SubTask 1');
       expect(res.updatedAt).toBeNull();
-      expect(res.done).toBeTruthy();
+      expect(res.done).toBeFalsy();
     });
   });
 });

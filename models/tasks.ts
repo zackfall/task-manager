@@ -15,7 +15,7 @@ const tasksSchema = new Schema({
   },
   updatedAt: {
     type: Date,
-    default: Date.now
+    default: null
   },
   subTasks: {
     type: Array<Schema.Types.ObjectId>,
@@ -43,7 +43,7 @@ const subTasksSchema = new Schema({
   },
   updatedAt: {
     type: Date,
-    default: Date.now
+    default: null
   },
   done: {
     type: Boolean,

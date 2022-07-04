@@ -20,15 +20,17 @@ const fetchSubTask = async (id: any) => await SubTasksModel
 
 const createTask = async (name: string, desc: string, subTasks: typeof SubTasksModel | null) => {
   if (subTasks === null) {
-    subTasks = [];
+    return await new TasksModel({
+      name,
+      desc
+    }).save();
   }
 
-  const task = new TasksModel({
+  return await new TasksModel({
     name,
     desc,
     subTasks
-  });
-  await task.save();
+  }).save();
 };
 
 const createSubTask = async (name: string, desc: string) => {
@@ -36,7 +38,7 @@ const createSubTask = async (name: string, desc: string) => {
     name,
     desc
   });
-  await subTask.save();
+  return await subTask.save();
 };
 
 const updateTask = () => {};
