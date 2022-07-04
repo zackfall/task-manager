@@ -10,17 +10,21 @@ const tasksSchema = new Schema({
     trim: true
   },
   createdAt: {
-    type: Date
+    type: Date,
+    default: Date.now
   },
   updatedAt: {
-    type: Date
+    type: Date,
+    default: Date.now
   },
-  subTasks: [{
-    type: Schema.Types.ObjectId,
+  subTasks: {
+    type: Array<Schema.Types.ObjectId>,
+    default: [],
     ref: 'sub-tasks'
-  }],
+  },
   done: {
-    type: Boolean
+    type: Boolean,
+    default: false
   }
 });
 
@@ -34,13 +38,16 @@ const subTasksSchema = new Schema({
     trim: true
   },
   createdAt: {
-    type: Date
+    type: Date,
+    default: Date.now
   },
   updatedAt: {
-    type: Date
+    type: Date,
+    default: Date.now
   },
   done: {
-    type: Boolean
+    type: Boolean,
+    default: false
   }
 });
 
