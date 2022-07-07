@@ -21,7 +21,7 @@ import {
 } from "../services/tasks";
 
 describe('Test Tasks Service', () => {
-  describe('fetchTasks', () => {
+  describe('Fetch', () => {
     it('should return a list of tasks', async () => {
       mockingoose(TasksModel).toReturn([
         {
@@ -83,7 +83,7 @@ describe('Test Tasks Service', () => {
           subTasks: null,
           done: false
         }, 'findOne');
-      const res = await fetchTask();
+      const res = await fetchTask("62c6249cb7f600f0cbc70095");
       expect(res.name).toBe('Task 1');
       expect(res.description).toBe('The first task');
       expect(res.subTasks).toBe(null);
@@ -115,18 +115,20 @@ describe('Test Tasks Service', () => {
     it('should return a subTask', async () => {
       mockingoose(SubTasksModel).toReturn(
         {
+          _id: "62c6249cb7f600f0cbc70095",
           name: 'SubTask 1',
           description: "subtask 1",
           createdAt: new Date('2022-06-01T13:24:42'),
           updatedAt: null,
           done: true
         }, 'findOne');
-      const res = await fetchSubTask();
+      const res = await fetchSubTask("62c6249cb7f600f0cbc70095");
       expect(res.createdAt).toEqual(new Date('2022-06-01T13:24:42'));
       expect(res.done).toBeTruthy();
     });
   });
-  describe('createTasks', () => {
+
+  describe('Create', () => {
     it('should return the created task', async () => {
       mockingoose(SubTasksModel).toReturn(
         {
@@ -158,5 +160,36 @@ describe('Test Tasks Service', () => {
       expect(res.updatedAt).toBeNull();
       expect(res.done).toBeFalsy();
     });
+  });
+
+  // This don't do anything so I just do a simple test like this one
+  describe('Update', () => {
+    it('should return the updated task document', async () => {
+      const doc = {
+        _id: "62c6249cb7f600f0cbc70095",
+        name: 'Task 1',
+        description: 'task 1',
+        createdAt: new Date('2022-06-01T13:24:42'),
+        updatedAt: null,
+        subTasks: [],
+        done: false
+      }
+      mockingoose(TasksModel).toReturn(doc, 'updateOne');
+      const res = await updateTask("62c6249cb7f600f0cbc70095", { name: 'Updated task', done: true });
+      expect(res).toMatchObject(res);
+    });
+    it('should return the updated subtask', async () => {
+      const doc = {
+        _id: "62c6249cb7f600f0cbc70095",
+        name: "SubTask 1",
+        description: "task 1",
+        createdAt: new Date('2022-06-01T13:24:42'),
+        updatedAt: null,
+        done: false
+      }
+      mockingoose(SubTasksModel).toReturn(doc, 'updateOne');
+      const res = await updateSubTask("62c6249cb7f600f0cbc70095", { name: 'Updated subtask', done: true });
+      expect(res).toMatchObject(res);
+    })
   });
 });
