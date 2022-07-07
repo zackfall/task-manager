@@ -14,15 +14,14 @@ import {
   createSubTask,
   updateTask,
   updateSubTask,
-  deleteTasks,
   deleteTask,
-  deleteSubTasks,
   deleteSubTask
 } from "../services/tasks";
 
 describe('Test Tasks Service', () => {
   describe('Fetch', () => {
     it('should return a list of tasks', async () => {
+      // Create the mock model to use in the test
       mockingoose(TasksModel).toReturn([
         {
           name: 'Task 1',
@@ -66,6 +65,7 @@ describe('Test Tasks Service', () => {
           done: true
         }
       ], 'find');
+      // using our service to work with the mock model
       const res = await fetchTasks();
       expect(res[0].name).toBe('Task 1');
       expect(res[0].createdAt).toEqual(new Date('2022-06-01T13:24:42'));
@@ -173,7 +173,7 @@ describe('Test Tasks Service', () => {
         updatedAt: null,
         subTasks: [],
         done: false
-      }
+      };
       mockingoose(TasksModel).toReturn(doc, 'updateOne');
       const res = await updateTask("62c6249cb7f600f0cbc70095", { name: 'Updated task', done: true });
       expect(res).toMatchObject(res);
@@ -186,10 +186,38 @@ describe('Test Tasks Service', () => {
         createdAt: new Date('2022-06-01T13:24:42'),
         updatedAt: null,
         done: false
-      }
+      };
       mockingoose(SubTasksModel).toReturn(doc, 'updateOne');
       const res = await updateSubTask("62c6249cb7f600f0cbc70095", { name: 'Updated subtask', done: true });
       expect(res).toMatchObject(res);
-    })
+    });
+  });
+
+  describe('Delete', () => {
+    it('should remove the task and return the deleted object', async () => {
+      const doc = {
+        name: 'Task 1',
+        description: "The first task",
+        createdAt: new Date('2022-06-01T13:24:42'),
+        updatedAt: new Date('2022-06-12T09:40:35'),
+        subTasks: null,
+        done: true
+      };
+      mockingoose(TasksModel).toReturn(doc, 'findOneAndDelete');
+      const res = await deleteTask("62c6249cb7f600f0cbc70095");
+      expect(res).toMatchObject(doc);
+    });
+    it('should remove the subTask and return the deleted object', async () => {
+      const doc = {
+        name: 'Task 1',
+        description: "The first task",
+        createdAt: new Date('2022-06-01T13:24:42'),
+        updatedAt: new Date('2022-06-12T09:40:35'),
+        done: true
+      };
+      mockingoose(SubTasksModel).toReturn(doc, 'findOneAndDelete');
+      const res = await deleteSubTask("62c6249cb7f600f0cbc70095");
+      expect(res).toMatchObject(doc)
+    });
   });
 });

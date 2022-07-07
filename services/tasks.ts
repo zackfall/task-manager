@@ -41,18 +41,19 @@ const createSubTask = async (name: string, desc: string) => {
   return await subTask.save();
 };
 
-const updateTask = async (id: any, obj: object) => TasksModel
+const updateTask = async (id: any, obj: object) => await TasksModel
   .updateOne({ updatedAt: Date.now(), ...obj })
   .where({ _id: id });
 
-const updateSubTask = async (id: any, obj: object) => SubTasksModel
+const updateSubTask = async (id: any, obj: object) => await SubTasksModel
   .updateOne({ updatedAt: Date.now(), ...obj})
   .where({ _id: id });
 
-const deleteTasks = () => {};
-const deleteTask = () => {};
-const deleteSubTasks = () => {};
-const deleteSubTask = () => {};
+const deleteTask = async (id: any) => await TasksModel
+  .findOneAndDelete({ _id: id });
+
+const deleteSubTask = async (id: any) => await SubTasksModel
+  .findOneAndDelete({ _id: id });
 
 export {
   fetchTasks,
@@ -64,7 +65,5 @@ export {
   updateTask,
   updateSubTask,
   deleteTask,
-  deleteTasks,
   deleteSubTask,
-  deleteSubTasks
 };
